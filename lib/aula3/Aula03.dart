@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:receito/Perfil.dart';
+import 'package:receito/aula3/Inscricao.dart';
 
-class Principal extends StatelessWidget {
-  const Principal ({super.key});
+class Aula03 extends StatelessWidget {
+  const Aula03 ({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Perfil(),
+      home: Inscricao(),
     );
   }
 }
