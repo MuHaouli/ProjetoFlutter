@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:receito/projeto/Pesquisa.dart';
 
 class Perfil extends StatelessWidget {
   const Perfil({super.key});
@@ -12,14 +13,19 @@ class Perfil extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
-        child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Pesquisa(),
+            const SizedBox(height: 24,),
+        Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.orange[200],
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.orange)
           ),
-          child: Column(
+          child: const Column(
             children: [
               Row(
                 children: [
@@ -38,6 +44,8 @@ class Perfil extends StatelessWidget {
             ],
           ),
         ),
+       ],
+      ),
       ),
     );
   }
