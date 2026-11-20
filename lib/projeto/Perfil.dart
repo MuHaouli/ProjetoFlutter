@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:receito/projeto/Pesquisa.dart';
+
+import 'Pesquisa.dart';
+import 'DetalhesReceita.dart';
+import 'Favoritos.dart';
 
 class Perfil extends StatelessWidget {
   const Perfil({super.key});
@@ -8,44 +11,85 @@ class Perfil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pagina de Receitas"),
-        backgroundColor: Colors.orange,
+        title: const Text('Receito'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const Text(
+              'Receitas',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Componente de pesquisa dentro da página.
             const Pesquisa(),
-            const SizedBox(height: 24,),
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.orange[200],
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.orange)
-          ),
-          child: const Column(
-            children: [
-              Row(
+
+            const SizedBox(height: 24),
+
+            // Área reservada para os dados futuros.
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.orange.shade200,
+                ),
+              ),
+              child: const Column(
                 children: [
-                  CircleAvatar(child: Icon(Icons.person),),
-                  SizedBox(width: 16,),
-                  Expanded(child: Text(
-                    'Bolo De cenoura',
-                    style: TextStyle(fontSize: 20),
-                    )
+                  Icon(
+                    Icons.restaurant_menu,
+                    size: 48,
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'As receitas serão exibidas aqui.',
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
-              Text("Veja o passo a passo aqui:"),
-              SizedBox(height: 8,),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 24),
+
+            FilledButton.icon(
+              key: const ValueKey('abrir-detalhes'),
+              icon: const Icon(Icons.description_outlined),
+              label: const Text('Abrir detalhes'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (_) => const DetalhesReceita(),
+                  ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 12),
+
+            OutlinedButton.icon(
+              key: const ValueKey('abrir-favoritos'),
+              icon: const Icon(Icons.favorite_border),
+              label: const Text('Meus favoritos'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (_) => const Favoritos(),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
-       ],
-      ),
       ),
     );
   }

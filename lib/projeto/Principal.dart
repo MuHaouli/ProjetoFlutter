@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:receito/projeto/Perfil.dart';
+
+import 'Perfil.dart';
 
 class Principal extends StatelessWidget {
-  const Principal ({super.key});
+  const Principal({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Perfil(),
+      title: 'Receito',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.orange,
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.orange,
+          foregroundColor: Colors.black,
+        ),
+      ),
+      home: const Perfil(),
     );
   }
 }

@@ -9,19 +9,16 @@ class Pesquisa extends StatefulWidget {
 
 class _PesquisaState extends State<Pesquisa> {
   final nome = TextEditingController();
-  String? mensagemErro;
 
+  String? mensagemErro;
 
   void validarNome(String valor) {
     setState(() {
-      if (valor
-          .trim()
-          .isEmpty) {
-        mensagemErro = "Informe a pesquisa! Espaços vazios não contam como caracter";
-      } else if (valor
-          .trim()
-          .length < 3) {
-        mensagemErro = "Informe ao menos 3 caracteres";
+      if (valor.trim().isEmpty) {
+        mensagemErro =
+        'Informe a pesquisa! Espaços vazios não contam como caracteres.';
+      } else if (valor.trim().length < 3) {
+        mensagemErro = 'Informe ao menos 3 caracteres';
       } else {
         mensagemErro = null;
       }
@@ -30,12 +27,17 @@ class _PesquisaState extends State<Pesquisa> {
 
   void Inscrever() {
     validarNome(nome.text);
+
     if (mensagemErro != null) return;
 
     final texto = nome.text.trim();
+
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Pesquisa Recebida: $texto"))
+      SnackBar(
+        content: Text('Pesquisa Recebida: $texto'),
+      ),
     );
+
     nome.clear();
   }
 
@@ -52,11 +54,12 @@ class _PesquisaState extends State<Pesquisa> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
-          controller: nome, //identificador do input
-          decoration: InputDecoration( //Decoração do textField
-              labelText: 'Pesquise pela receita',
-              errorText: mensagemErro,
-              border: const OutlineInputBorder()
+          controller: nome,
+          decoration: InputDecoration(
+            labelText: 'Pesquise pela receita',
+            errorText: mensagemErro,
+            errorMaxLines: 4,
+            border: const OutlineInputBorder(),
           ),
           onChanged: (valor) {
             if (mensagemErro != null) {
@@ -64,8 +67,10 @@ class _PesquisaState extends State<Pesquisa> {
             }
           },
         ),
-        const SizedBox(height: 12,),
-        FilledButton(onPressed: Inscrever, child: const Text('Pesquisar'),
+        const SizedBox(height: 12),
+        FilledButton(
+          onPressed: Inscrever,
+          child: const Text('Pesquisar'),
         ),
       ],
     );
