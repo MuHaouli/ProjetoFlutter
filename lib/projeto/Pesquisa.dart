@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Pesquisa extends StatefulWidget {
-  const Pesquisa({super.key});
+  const Pesquisa({
+    super.key,
+    required this.aoPesquisar,
+    required this.aoLimpar,
+    required this.carregando,
+  });
+
+  final ValueChanged<String> aoPesquisar;
+  final VoidCallback aoLimpar;
+  final bool carregando;
 
   @override
   State<Pesquisa> createState() => _PesquisaState();
@@ -12,33 +21,38 @@ class _PesquisaState extends State<Pesquisa> {
 
   String? mensagemErro;
 
-  void validarNome(String valor) {
-    setState(() {
-      if (valor.trim().isEmpty) {
-        mensagemErro =
-        'Informe a pesquisa! Espaços vazios não contam como caracteres.';
-      } else if (valor.trim().length < 3) {
-        mensagemErro = 'Informe ao menos 3 caracteres';
-      } else {
-        mensagemErro = null;
-      }
-    });
-  }
-
-  void Inscrever() {
-    validarNome(nome.text);
-
-    if (mensagemErro != null) return;
+  void pesquisar() {
+    if (widget.carregando) return;
 
     final texto = nome.text.trim();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Pesquisa Recebida: $texto'),
-      ),
-    );
+    setState(() {
+      mensagemErro = texto.isEmpty
+          ? 'Informe o nome de uma receita.'
+          : null;
+    });
+
+    if (mensagemErro != null) return;
+
+    FocusScope.of(context).unfocus();
+
+    widget.aoPesquisar(texto);
+
+    // O texto continua no campo para preservar a consulta.
+  }
+
+  void limpar() {
+    if (widget.carregando) return;
 
     nome.clear();
+
+    setState(() {
+      mensagemErro = null;
+    });
+
+    FocusScope.of(context).unfocus();
+
+    widget.aoLimpar();
   }
 
   @override
@@ -55,22 +69,35 @@ class _PesquisaState extends State<Pesquisa> {
       children: [
         TextField(
           controller: nome,
+          enabled: !widget.carregando,
+          textInputAction: TextInputAction.search,
           decoration: InputDecoration(
             labelText: 'Pesquise pela receita',
             errorText: mensagemErro,
-            errorMaxLines: 4,
+            errorMaxLines: 3,
             border: const OutlineInputBorder(),
           ),
-          onChanged: (valor) {
+          onSubmitted: (_) => pesquisar(),
+          onChanged: (_) {
             if (mensagemErro != null) {
-              validarNome(valor);
+              setState(() {
+                mensagemErro = null;
+              });
             }
           },
         ),
+
         const SizedBox(height: 12),
-        FilledButton(
-          onPressed: Inscrever,
-          child: const Text('Pesquisar'),
+
+        FilledButton.icon(
+          onPressed: widget.carregando ? null : pesquisar,
+          icon: const Icon(Icons.search),
+          label: const Text('Pesquisar'),
+        ),
+
+        OutlinedButton(
+          onPressed: widget.carregando ? null : limpar,
+          child: const Text('Limpar pesquisa e ver receitas'),
         ),
       ],
     );
